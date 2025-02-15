@@ -1,27 +1,19 @@
-import { Toaster } from "@/components/ui/toaster";
-import { Toaster as Sonner } from "@/components/ui/sonner";
-import { TooltipProvider } from "@/components/ui/tooltip";
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
-import Index from "./pages/Index";
-import NotFound from "./pages/NotFound";
 
-const queryClient = new QueryClient();
+import { NotesProvider } from "./contexts/NotesContext";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+import NoteList from "./components/NoteList";
+import NoteEditor from "./components/NoteEditor";
 
 const App = () => (
-  <QueryClientProvider client={queryClient}>
-    <TooltipProvider>
-      <Toaster />
-      <Sonner />
-      <BrowserRouter>
-        <Routes>
-          <Route path="/" element={<Index />} />
-          {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
-          <Route path="*" element={<NotFound />} />
-        </Routes>
-      </BrowserRouter>
-    </TooltipProvider>
-  </QueryClientProvider>
+  <NotesProvider>
+    <BrowserRouter>
+      <Routes>
+        <Route path="/" element={<NoteList />} />
+        <Route path="/new" element={<NoteEditor />} />
+        <Route path="/edit/:id" element={<NoteEditor />} />
+      </Routes>
+    </BrowserRouter>
+  </NotesProvider>
 );
 
 export default App;
