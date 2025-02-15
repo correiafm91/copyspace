@@ -62,7 +62,7 @@ export default function NoteEditor() {
           <Button
             variant="ghost"
             onClick={() => navigate('/')}
-            className="text-note-muted hover:text-note-text note-transition"
+            className="text-note-muted hover:text-note-text note-transition active:scale-95"
           >
             <ArrowLeft className="w-4 h-4 mr-2" />
             Back
@@ -71,18 +71,21 @@ export default function NoteEditor() {
             <Button
               variant="ghost"
               onClick={toggleFullscreen}
-              className="text-note-muted hover:text-note-text note-transition"
+              className="text-note-muted hover:text-note-text note-transition active:scale-95"
             >
               {isFullscreen ? <Minimize2 className="w-4 h-4" /> : <Maximize2 className="w-4 h-4" />}
             </Button>
             <Button 
               onClick={copyToClipboard}
               variant="ghost"
-              className="text-note-muted hover:text-note-text note-transition"
+              className="text-note-muted hover:text-note-text note-transition active:scale-95"
             >
               {isCopied ? <Check className="w-4 h-4" /> : <Copy className="w-4 h-4" />}
             </Button>
-            <Button onClick={handleSave} className="bg-black text-white hover:bg-black/80 note-transition">
+            <Button 
+              onClick={handleSave} 
+              className="bg-black text-white hover:bg-black/80 note-transition active:scale-95"
+            >
               Save
             </Button>
           </div>
@@ -94,16 +97,16 @@ export default function NoteEditor() {
             value={title}
             onChange={(e) => setTitle(e.target.value)}
             placeholder="Note title..."
-            className="w-full bg-transparent text-2xl font-light focus:outline-none"
+            className="w-full bg-transparent text-2xl font-light focus:outline-none transition-colors focus:bg-white/5 rounded px-2 py-1"
             autoFocus
           />
           <textarea
             value={content}
             onChange={(e) => setContent(e.target.value)}
             placeholder="Start writing..."
-            className="w-full h-[60vh] bg-transparent focus:outline-none resize-none text-note-text/90"
+            className="w-full h-[60vh] bg-transparent focus:outline-none resize-none text-note-text/90 transition-colors focus:bg-white/5 rounded px-2 py-1"
           />
-          <div className="flex justify-end text-note-muted text-sm">
+          <div className="flex justify-end text-note-muted text-sm animate-fade-in">
             {getWordCount()} words
           </div>
         </div>

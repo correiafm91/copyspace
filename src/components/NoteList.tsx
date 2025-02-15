@@ -12,13 +12,13 @@ export default function NoteList() {
   return (
     <div className="max-w-4xl mx-auto p-6">
       <div className="flex justify-between items-center mb-8">
-        <h1 className="text-3xl font-light tracking-tight flex items-center gap-2">
+        <h1 className="text-3xl font-light tracking-tight flex items-center gap-2 animate-fade-in">
           <Target className="w-6 h-6" />
-          Million-Dollar Copywriter
+          Gustavo Correia Copywriter
         </h1>
         <Button
           onClick={() => navigate('/new')}
-          className="bg-black text-white hover:bg-black/80 note-transition"
+          className="bg-black text-white hover:bg-black/80 note-transition active:scale-95"
         >
           <Plus className="w-4 h-4 mr-2" />
           New Note
@@ -29,7 +29,7 @@ export default function NoteList() {
         {notes.map((note) => (
           <div
             key={note.id}
-            className="glass-panel p-4 rounded-lg hover-scale group cursor-pointer"
+            className="glass-panel p-4 rounded-lg hover-scale group cursor-pointer active:scale-95 note-transition"
             onClick={() => navigate(`/edit/${note.id}`)}
           >
             <div className="flex justify-between items-start mb-2">
@@ -39,7 +39,7 @@ export default function NoteList() {
                   e.stopPropagation();
                   deleteNote(note.id);
                 }}
-                className="opacity-0 group-hover:opacity-100 note-transition text-note-muted hover:text-note-text"
+                className="opacity-0 group-hover:opacity-100 note-transition text-note-muted hover:text-note-text active:scale-90"
               >
                 <Trash className="w-4 h-4" />
               </button>
