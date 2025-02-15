@@ -52,7 +52,12 @@ export default function NoteEditor() {
   };
 
   const getWordCount = () => {
-    return content.trim() ? content.trim().split(/\s+/).length : 0;
+    if (!content.trim()) return 0;
+    // Remove espaços extras e quebras de linha múltiplas
+    const cleanContent = content.trim().replace(/\s+/g, ' ');
+    // Divide o texto em palavras e conta
+    const words = cleanContent.split(' ');
+    return words.length;
   };
 
   return (
