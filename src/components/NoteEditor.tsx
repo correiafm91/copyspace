@@ -52,12 +52,13 @@ export default function NoteEditor() {
   };
 
   const getWordCount = () => {
-    if (!content.trim()) return 0;
-    // Remove espaços extras e quebras de linha múltiplas
-    const cleanContent = content.trim().replace(/\s+/g, ' ');
-    // Divide o texto em palavras e conta
-    const words = cleanContent.split(' ');
-    return words.length;
+    const text = content.trim();
+    if (!text) return 0;
+    
+    // Divide por espaços, tabulações e quebras de linha
+    const words = text.split(/[\s\n\t]+/);
+    // Filtra palavras vazias e retorna a contagem
+    return words.filter(word => word.length > 0).length;
   };
 
   return (
