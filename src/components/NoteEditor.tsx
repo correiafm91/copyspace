@@ -2,13 +2,14 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useNotes } from '../contexts/NotesContext';
-import { ArrowLeft, Maximize2, Minimize2 } from 'lucide-react';
+import { ArrowLeft, Maximize2, Minimize2, Copy, Check } from 'lucide-react';
 import { Button } from './ui/button';
 
 export default function NoteEditor() {
   const [title, setTitle] = useState('');
   const [content, setContent] = useState('');
   const [isFullscreen, setIsFullscreen] = useState(false);
+  const [isCopied, setIsCopied] = useState(false);
   const { id } = useParams();
   const navigate = useNavigate();
   const { addNote, updateNote, getNote } = useNotes();
@@ -44,6 +45,16 @@ export default function NoteEditor() {
     }
   };
 
+  const copyToClipboard = async () => {
+    await navigator.clipboard.writeText(content);
+    setIsCopied(true);
+    setTimeout(() => setIsCopied(false), 2000);
+  };
+
+  const getWordCount = () => {
+    return content.trim() ? content.trim().split(/\s+/).length : 0;
+  };
+
   return (
     <div className={`min-h-screen ${isFullscreen ? 'bg-note-bg' : ''}`}>
       <div className="max-w-4xl mx-auto p-6">
@@ -64,7 +75,14 @@ export default function NoteEditor() {
             >
               {isFullscreen ? <Minimize2 className="w-4 h-4" /> : <Maximize2 className="w-4 h-4" />}
             </Button>
-            <Button onClick={handleSave} className="glass-panel hover:bg-white/5 note-transition">
+            <Button 
+              onClick={copyToClipboard}
+              variant="ghost"
+              className="text-note-muted hover:text-note-text note-transition"
+            >
+              {isCopied ? <Check className="w-4 h-4" /> : <Copy className="w-4 h-4" />}
+            </Button>
+            <Button onClick={handleSave} className="bg-black text-white hover:bg-black/80 note-transition">
               Save
             </Button>
           </div>
@@ -85,6 +103,9 @@ export default function NoteEditor() {
             placeholder="Start writing..."
             className="w-full h-[60vh] bg-transparent focus:outline-none resize-none text-note-text/90"
           />
+          <div className="flex justify-end text-note-muted text-sm">
+            {getWordCount()} words
+          </div>
         </div>
       </div>
     </div>
