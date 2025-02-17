@@ -13,7 +13,7 @@ export default function NoteEditor() {
   const [content, setContent] = useState('');
   const [isFullscreen, setIsFullscreen] = useState(false);
   const [isCopied, setIsCopied] = useState(false);
-  const [showTemplates, setShowTemplates] = useState(!useParams().id);
+  const [showTemplates, setShowTemplates] = useState(false);
   const [tasks, setTasks] = useState([
     { id: '1', label: 'Pesquisa de referências', completed: false },
     { id: '2', label: 'Definir público-alvo', completed: false },

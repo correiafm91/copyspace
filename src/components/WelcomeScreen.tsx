@@ -15,18 +15,15 @@ export default function WelcomeScreen() {
         <h1 className="text-4xl font-light mb-4 text-note-text">
           <Typewriter
             options={{
-              strings: ['Bem-vindo ao seu Editor de Copy', 'Crie conteúdo impactante', 'Organize suas ideias'],
+              strings: ['Bem-vindo ao seu Editor|'],
               autoStart: true,
-              loop: true,
+              loop: false,
               deleteSpeed: 50,
             }}
           />
         </h1>
-        <p className="text-note-muted text-lg mb-8">
-          Editor inteligente com modelos prontos, checklist de tarefas e ferramentas de otimização.
-        </p>
         <Button
-          onClick={() => navigate('/new')}
+          onClick={() => navigate('/notes')}
           className="bg-black text-white hover:bg-black/80 px-8 py-6 text-lg"
         >
           Começar a Escrever
