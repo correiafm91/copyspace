@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useNotes } from '../contexts/NotesContext';
@@ -5,7 +6,6 @@ import { ArrowLeft, Maximize2, Minimize2, Copy, Check } from 'lucide-react';
 import { Button } from './ui/button';
 import RichTextEditor from './RichTextEditor';
 import TemplateSelector from './TemplateSelector';
-import CopyChecklist from './CopyChecklist';
 import SearchKeywords from './SearchKeywords';
 
 export default function NoteEditor() {
@@ -13,15 +13,7 @@ export default function NoteEditor() {
   const [content, setContent] = useState('');
   const [isFullscreen, setIsFullscreen] = useState(false);
   const [isCopied, setIsCopied] = useState(false);
-  const [showTemplates, setShowTemplates] = useState(false);
-  const [tasks, setTasks] = useState([
-    { id: '1', label: 'Pesquisa de referências', completed: false },
-    { id: '2', label: 'Definir público-alvo', completed: false },
-    { id: '3', label: 'Elaborar primeiro rascunho', completed: false },
-    { id: '4', label: 'Revisar gramática e coesão', completed: false },
-    { id: '5', label: 'Otimizar palavras-chave', completed: false },
-    { id: '6', label: 'Revisão final', completed: false },
-  ]);
+  const [showTemplates, setShowTemplates] = useState(!useParams().id);
   const { id } = useParams();
   const navigate = useNavigate();
   const { addNote, updateNote, getNote } = useNotes();
@@ -68,12 +60,6 @@ export default function NoteEditor() {
     if (!text) return 0;
     const words = text.split(/[\s\n\t]+/);
     return words.filter(word => word.length > 0).length;
-  };
-
-  const handleToggleTask = (taskId: string) => {
-    setTasks(tasks.map(task => 
-      task.id === taskId ? { ...task, completed: !task.completed } : task
-    ));
   };
 
   const getCharCount = () => {
@@ -131,31 +117,20 @@ export default function NoteEditor() {
           </div>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
-          <div className="md:col-span-3">
-            <div className="glass-panel rounded-lg p-6 space-y-4 animate-fade-in">
-              <input
-                type="text"
-                value={title}
-                onChange={(e) => setTitle(e.target.value)}
-                placeholder="Note title..."
-                className="w-full bg-transparent text-2xl font-light focus:outline-none transition-colors focus:bg-white/5 rounded px-2 py-1"
-                autoFocus
-              />
-              <SearchKeywords content={content} />
-              <RichTextEditor content={content} onChange={setContent} />
-              <div className="flex justify-between text-note-muted text-sm animate-fade-in">
-                <span>{getCharCount()} caracteres</span>
-                <span>{getWordCount()} palavras</span>
-              </div>
-            </div>
-          </div>
-          
-          <div className="md:col-span-1">
-            <div className="glass-panel rounded-lg p-6 animate-fade-in">
-              <h3 className="text-lg font-medium mb-4">Checklist</h3>
-              <CopyChecklist tasks={tasks} onToggleTask={handleToggleTask} />
-            </div>
+        <div className="glass-panel rounded-lg p-6 space-y-4 animate-fade-in">
+          <input
+            type="text"
+            value={title}
+            onChange={(e) => setTitle(e.target.value)}
+            placeholder="Note title..."
+            className="w-full bg-transparent text-2xl font-light focus:outline-none transition-colors focus:bg-white/5 rounded px-2 py-1"
+            autoFocus
+          />
+          <SearchKeywords content={content} />
+          <RichTextEditor content={content} onChange={setContent} />
+          <div className="flex justify-between text-note-muted text-sm animate-fade-in">
+            <span>{getCharCount()} caracteres</span>
+            <span>{getWordCount()} palavras</span>
           </div>
         </div>
       </div>
