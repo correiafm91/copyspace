@@ -14,6 +14,8 @@ export default function NoteEditor() {
   const [isFullscreen, setIsFullscreen] = useState(false);
   const [isCopied, setIsCopied] = useState(false);
   const [showTemplates, setShowTemplates] = useState(!useParams().id);
+  const [showNameProject, setShowNameProject] = useState(false);
+  const [templateContent, setTemplateContent] = useState('');
   const { id } = useParams();
   const navigate = useNavigate();
   const { addNote, updateNote, getNote } = useNotes();
@@ -36,7 +38,7 @@ export default function NoteEditor() {
     } else {
       addNote(title, content);
     }
-    navigate('/');
+    navigate('/notes');
   };
 
   const toggleFullscreen = () => {
@@ -72,11 +74,39 @@ export default function NoteEditor() {
         <h2 className="text-2xl font-light mb-6">Escolha um modelo</h2>
         <TemplateSelector
           onSelect={(template) => {
-            setTitle(template.name);
-            setContent(template.content);
+            setTemplateContent(template.content);
             setShowTemplates(false);
+            setShowNameProject(true);
           }}
         />
+      </div>
+    );
+  }
+
+  if (showNameProject) {
+    return (
+      <div className="max-w-4xl mx-auto p-6">
+        <h2 className="text-2xl font-light mb-6">Dê o nome ao seu projeto</h2>
+        <div className="glass-panel rounded-lg p-6 space-y-4 animate-fade-in">
+          <input
+            type="text"
+            value={title}
+            onChange={(e) => setTitle(e.target.value)}
+            placeholder="Nome do projeto..."
+            className="w-full bg-transparent text-2xl font-light focus:outline-none transition-colors focus:bg-white/5 rounded px-2 py-1"
+            autoFocus
+          />
+          <Button 
+            onClick={() => {
+              setContent(templateContent);
+              setShowNameProject(false);
+            }}
+            className="w-full bg-black text-white hover:bg-black/80 note-transition active:scale-95"
+            disabled={!title.trim()}
+          >
+            Continuar
+          </Button>
+        </div>
       </div>
     );
   }
@@ -87,7 +117,7 @@ export default function NoteEditor() {
         <div className="flex justify-between items-center mb-8">
           <Button
             variant="ghost"
-            onClick={() => navigate('/')}
+            onClick={() => navigate('/notes')}
             className="text-note-muted hover:text-note-text note-transition active:scale-95"
           >
             <ArrowLeft className="w-4 h-4 mr-2" />
