@@ -4,12 +4,15 @@ import { useNavigate, useParams } from 'react-router-dom';
 import { useNotes } from '../contexts/NotesContext';
 import { ArrowLeft, Maximize2, Minimize2, Copy, Check } from 'lucide-react';
 import { Button } from './ui/button';
+import RichTextEditor from './RichTextEditor';
+import TemplateSelector from './TemplateSelector';
 
 export default function NoteEditor() {
   const [title, setTitle] = useState('');
   const [content, setContent] = useState('');
   const [isFullscreen, setIsFullscreen] = useState(false);
   const [isCopied, setIsCopied] = useState(false);
+  const [showTemplates, setShowTemplates] = useState(!useParams().id);
   const { id } = useParams();
   const navigate = useNavigate();
   const { addNote, updateNote, getNote } = useNotes();
@@ -52,14 +55,26 @@ export default function NoteEditor() {
   };
 
   const getWordCount = () => {
-    const text = content.trim();
+    const text = content.replace(/<[^>]*>/g, '').trim();
     if (!text) return 0;
-    
-    // Divide por espaços, tabulações e quebras de linha
     const words = text.split(/[\s\n\t]+/);
-    // Filtra palavras vazias e retorna a contagem
     return words.filter(word => word.length > 0).length;
   };
+
+  if (showTemplates) {
+    return (
+      <div className="max-w-4xl mx-auto p-6">
+        <h2 className="text-2xl font-light mb-6">Escolha um modelo</h2>
+        <TemplateSelector
+          onSelect={(template) => {
+            setTitle(template.name);
+            setContent(template.content);
+            setShowTemplates(false);
+          }}
+        />
+      </div>
+    );
+  }
 
   return (
     <div className={`min-h-screen ${isFullscreen ? 'bg-note-bg' : ''}`}>
@@ -106,12 +121,7 @@ export default function NoteEditor() {
             className="w-full bg-transparent text-2xl font-light focus:outline-none transition-colors focus:bg-white/5 rounded px-2 py-1"
             autoFocus
           />
-          <textarea
-            value={content}
-            onChange={(e) => setContent(e.target.value)}
-            placeholder="Start writing..."
-            className="w-full h-[60vh] bg-transparent focus:outline-none resize-none text-note-text/90 transition-colors focus:bg-white/5 rounded px-2 py-1"
-          />
+          <RichTextEditor content={content} onChange={setContent} />
           <div className="flex justify-end text-note-muted text-sm animate-fade-in">
             {getWordCount()} words
           </div>
