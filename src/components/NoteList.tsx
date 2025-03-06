@@ -1,7 +1,7 @@
 
 import React, { useState } from 'react';
 import { useNotes } from '../contexts/NotesContext';
-import { Plus, Trash, Target, FolderPlus, Folder, ArrowDown, ArrowUp, MoreVertical, Edit, X } from 'lucide-react';
+import { Plus, Trash, Target, FolderPlus, Folder, ArrowDown, ArrowUp, MoreVertical, Edit, X, Check } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { Button } from './ui/button';
 import { 
