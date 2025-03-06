@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import { useNotes } from '../contexts/NotesContext';
 import { Plus, Trash, Target, FolderPlus, Folder, ArrowDown, ArrowUp, MoreVertical, Edit, X, Check } from 'lucide-react';
@@ -89,10 +90,32 @@ export default function NoteList() {
   return (
     <div className="max-w-4xl mx-auto p-6">
       <div className="flex justify-between items-center mb-8">
-        <h1 className="text-3xl font-light tracking-tight flex items-center gap-2 animate-fade-in">
+        <div className="flex items-center gap-3 animate-fade-in">
           <Target className="w-6 h-6" />
-          Gustavo Correia Copywriter
-        </h1>
+          <h1 className="text-3xl font-light tracking-tight">
+            Gustavo Correia Copywriter
+          </h1>
+          <div className="flex gap-2 items-center ml-4">
+            <Button
+              variant="ghost"
+              size="sm"
+              onClick={toggleSortDirection}
+              className="p-1 h-auto flex items-center gap-1 text-xs"
+              title={sortDirection === 'newest' ? 'Ordenar por mais antigas' : 'Ordenar por mais recentes'}
+            >
+              {sortDirection === 'newest' ? <ArrowDown className="w-4 h-4" /> : <ArrowUp className="w-4 h-4" />}
+            </Button>
+            <Button
+              variant="ghost"
+              size="sm"
+              onClick={() => setShowNewFolderInput(true)}
+              className="p-1 h-auto"
+              title="Criar nova pasta"
+            >
+              <FolderPlus className="w-4 h-4" />
+            </Button>
+          </div>
+        </div>
         <Button
           onClick={() => navigate('/new')}
           className="bg-black text-white hover:bg-black/80 note-transition active:scale-95"
