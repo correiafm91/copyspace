@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { useNotes } from '../contexts/NotesContext';
 import { Plus, Trash, Target, FolderPlus, Folder, ArrowDown, ArrowUp, MoreVertical, Edit, X, Check } from 'lucide-react';
@@ -11,6 +10,7 @@ import {
   DropdownMenuTrigger 
 } from './ui/dropdown-menu';
 import { useToast } from '../hooks/use-toast';
+import TaskList from './TaskList';
 
 export default function NoteList() {
   const { notes, folders, deleteNote, addFolder, updateFolder, deleteFolder } = useNotes();
@@ -24,7 +24,6 @@ export default function NoteList() {
   const [editingFolderName, setEditingFolderName] = useState('');
   const [selectedFolderId, setSelectedFolderId] = useState<string | null>(null);
 
-  // Function to strip HTML tags for display
   const stripHtmlTags = (html: string) => {
     return html.replace(/<[^>]*>/g, '');
   };
@@ -71,13 +70,11 @@ export default function NoteList() {
     setSortDirection(prev => prev === 'newest' ? 'oldest' : 'newest');
   };
 
-  // Get filtered and sorted notes
   const getFilteredNotes = () => {
     let filteredNotes = selectedFolderId 
       ? notes.filter(note => note.folderId === selectedFolderId)
       : notes;
     
-    // Sort by creation date
     return [...filteredNotes].sort((a, b) => {
       if (sortDirection === 'newest') {
         return b.createdAt - a.createdAt;
@@ -107,7 +104,7 @@ export default function NoteList() {
       
       <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-6">
         <div className="md:col-span-1">
-          <div className="glass-panel p-4 rounded-lg">
+          <div className="glass-panel p-4 rounded-lg mb-6">
             <div className="flex justify-between items-center mb-4">
               <h3 className="font-medium">Pastas</h3>
               <Button 
@@ -238,6 +235,8 @@ export default function NoteList() {
               ))}
             </ul>
           </div>
+          
+          <TaskList />
         </div>
         
         <div className="md:col-span-3">
