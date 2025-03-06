@@ -16,9 +16,10 @@ export default function NoteEditor() {
   const [showTemplates, setShowTemplates] = useState(!useParams().id);
   const [showNameProject, setShowNameProject] = useState(false);
   const [templateContent, setTemplateContent] = useState('');
+  const [selectedFolderId, setSelectedFolderId] = useState<string | null>(null);
   const { id } = useParams();
   const navigate = useNavigate();
-  const { addNote, updateNote, getNote } = useNotes();
+  const { addNote, updateNote, getNote, folders } = useNotes();
 
   useEffect(() => {
     if (id) {
@@ -26,6 +27,7 @@ export default function NoteEditor() {
       if (note) {
         setTitle(note.title);
         setContent(note.content);
+        setSelectedFolderId(note.folderId);
       }
     }
   }, [id, getNote]);
@@ -34,9 +36,9 @@ export default function NoteEditor() {
     if (!title.trim() || !content.trim()) return;
 
     if (id) {
-      updateNote(id, title, content);
+      updateNote(id, title, content, selectedFolderId);
     } else {
-      addNote(title, content);
+      addNote(title, content, selectedFolderId);
     }
     navigate('/notes');
   };
@@ -98,6 +100,25 @@ export default function NoteEditor() {
             className="w-full bg-transparent text-2xl font-light focus:outline-none transition-colors focus:bg-white/5 rounded px-2 py-1"
             autoFocus
           />
+          
+          {folders.length > 0 && (
+            <div className="mt-4">
+              <label className="block text-sm mb-1">Pasta (opcional)</label>
+              <select 
+                className="w-full bg-white/5 border border-white/10 rounded px-2 py-2 focus:outline-none"
+                value={selectedFolderId || ""}
+                onChange={(e) => setSelectedFolderId(e.target.value || null)}
+              >
+                <option value="">Sem pasta</option>
+                {folders.map(folder => (
+                  <option key={folder.id} value={folder.id}>
+                    {folder.name}
+                  </option>
+                ))}
+              </select>
+            </div>
+          )}
+          
           <Button 
             onClick={() => {
               setContent(templateContent);
@@ -158,6 +179,25 @@ export default function NoteEditor() {
             className="w-full bg-transparent text-2xl font-light focus:outline-none transition-colors focus:bg-white/5 rounded px-2 py-1"
             autoFocus
           />
+          
+          {folders.length > 0 && (
+            <div className="mt-2">
+              <label className="block text-sm mb-1">Pasta</label>
+              <select 
+                className="w-full bg-white/5 border border-white/10 rounded px-2 py-2 focus:outline-none"
+                value={selectedFolderId || ""}
+                onChange={(e) => setSelectedFolderId(e.target.value || null)}
+              >
+                <option value="">Sem pasta</option>
+                {folders.map(folder => (
+                  <option key={folder.id} value={folder.id}>
+                    {folder.name}
+                  </option>
+                ))}
+              </select>
+            </div>
+          )}
+          
           <SearchKeywords content={content} />
           <RichTextEditor content={content} onChange={setContent} />
           <div className="flex justify-between text-note-muted text-sm animate-fade-in">
