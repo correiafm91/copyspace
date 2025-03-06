@@ -9,6 +9,11 @@ export default function NoteList() {
   const { notes, deleteNote } = useNotes();
   const navigate = useNavigate();
 
+  // Function to strip HTML tags for display
+  const stripHtmlTags = (html: string) => {
+    return html.replace(/<[^>]*>/g, '');
+  };
+
   return (
     <div className="max-w-4xl mx-auto p-6">
       <div className="flex justify-between items-center mb-8">
@@ -44,7 +49,7 @@ export default function NoteList() {
                 <Trash className="w-4 h-4" />
               </button>
             </div>
-            <p className="text-note-muted text-sm line-clamp-3">{note.content}</p>
+            <p className="text-note-muted text-sm line-clamp-3">{stripHtmlTags(note.content)}</p>
           </div>
         ))}
       </div>

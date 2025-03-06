@@ -52,7 +52,9 @@ export default function NoteEditor() {
   };
 
   const copyToClipboard = async () => {
-    await navigator.clipboard.writeText(content);
+    // Strip HTML tags when copying to clipboard
+    const plainText = content.replace(/<[^>]*>/g, '');
+    await navigator.clipboard.writeText(plainText);
     setIsCopied(true);
     setTimeout(() => setIsCopied(false), 2000);
   };
