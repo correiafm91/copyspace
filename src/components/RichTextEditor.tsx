@@ -52,7 +52,7 @@ export default function RichTextEditor({ content, onChange }: RichTextEditorProp
       </div>
       <EditorContent 
         editor={editor} 
-        className="prose prose-invert max-w-none p-4 min-h-[200px] focus:outline-none"
+        className="prose prose-invert max-w-none p-4 min-h-[200px] focus:outline-none text-white"
       />
     </div>
   );
