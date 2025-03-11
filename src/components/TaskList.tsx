@@ -1,13 +1,14 @@
 
 import React, { useState } from 'react';
 import { useTasks } from '../contexts/TaskContext';
-import { Plus, Trash, Check, Square, CheckSquare } from 'lucide-react';
+import { Plus, Trash, Check, Square, CheckSquare, ListTodo } from 'lucide-react';
 import { Button } from './ui/button';
 import { useToast } from '../hooks/use-toast';
 
 export default function TaskList() {
   const { tasks, addTask, toggleTask, deleteTask } = useTasks();
   const [newTaskTitle, setNewTaskTitle] = useState('');
+  const [showNewTaskInput, setShowNewTaskInput] = useState(false);
   const { toast } = useToast();
 
   const handleAddTask = (e: React.FormEvent) => {
@@ -16,6 +17,7 @@ export default function TaskList() {
     
     addTask(newTaskTitle.trim());
     setNewTaskTitle('');
+    setShowNewTaskInput(false);
     
     toast({
       title: "Tarefa criada",
@@ -46,22 +48,45 @@ export default function TaskList() {
 
   return (
     <div className="glass-panel p-4 rounded-lg animate-fade-in">
-      <h2 className="text-xl font-light mb-4">Tarefas</h2>
-      
-      <form onSubmit={handleAddTask} className="flex gap-2 mb-4">
-        <input
-          type="text"
-          value={newTaskTitle}
-          onChange={(e) => setNewTaskTitle(e.target.value)}
-          placeholder="Nova tarefa..."
-          className="flex-1 bg-transparent border border-white/10 rounded px-3 py-2 text-sm focus:outline-none focus:border-white/30"
-          autoFocus
-        />
-        <Button type="submit" disabled={!newTaskTitle.trim()}>
+      <div className="flex justify-between items-center mb-4">
+        <h2 className="text-xl font-light">Tarefas</h2>
+        <Button
+          variant="ghost"
+          size="sm"
+          onClick={() => setShowNewTaskInput(true)}
+          className="p-1 h-auto"
+          title="Adicionar nova tarefa"
+        >
           <Plus className="w-4 h-4" />
-          Adicionar
         </Button>
-      </form>
+      </div>
+      
+      {showNewTaskInput && (
+        <form onSubmit={handleAddTask} className="flex gap-2 mb-4">
+          <input
+            type="text"
+            value={newTaskTitle}
+            onChange={(e) => setNewTaskTitle(e.target.value)}
+            placeholder="Nova tarefa..."
+            className="flex-1 bg-transparent border border-white/10 rounded px-3 py-2 text-sm focus:outline-none focus:border-white/30"
+            autoFocus
+          />
+          <Button type="submit" size="sm" disabled={!newTaskTitle.trim()}>
+            <Plus className="w-4 h-4" />
+          </Button>
+          <Button 
+            type="button" 
+            variant="ghost" 
+            size="sm" 
+            onClick={() => {
+              setShowNewTaskInput(false);
+              setNewTaskTitle('');
+            }}
+          >
+            <Trash className="w-4 h-4" />
+          </Button>
+        </form>
+      )}
       
       {tasks.length === 0 ? (
         <p className="text-note-muted text-sm text-center py-4">
