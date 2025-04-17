@@ -49,12 +49,15 @@ export default function TaskList() {
   return (
     <div className="glass-panel p-4 rounded-lg animate-fade-in">
       <div className="flex justify-between items-center mb-4">
-        <h2 className="text-xl font-light">Tarefas</h2>
+        <div className="flex items-center gap-2">
+          <ListTodo className="w-4 h-4 text-white/70" />
+          <h2 className="text-lg font-light text-gradient">Tarefas</h2>
+        </div>
         <Button
           variant="ghost"
           size="sm"
           onClick={() => setShowNewTaskInput(true)}
-          className="p-1 h-auto"
+          className="p-1.5 h-auto hover:bg-white/10"
           title="Adicionar nova tarefa"
         >
           <Plus className="w-4 h-4" />
@@ -68,47 +71,48 @@ export default function TaskList() {
             value={newTaskTitle}
             onChange={(e) => setNewTaskTitle(e.target.value)}
             placeholder="Nova tarefa..."
-            className="flex-1 bg-transparent border border-white/10 rounded px-3 py-2 text-sm focus:outline-none focus:border-white/30"
+            className="flex-1 px-3 py-1.5 text-sm focus:outline-none"
             autoFocus
           />
-          <Button type="submit" size="sm" disabled={!newTaskTitle.trim()}>
-            <Plus className="w-4 h-4" />
+          <Button type="submit" size="sm" variant="ghost" className="p-1.5 h-auto hover:bg-white/10" disabled={!newTaskTitle.trim()}>
+            <Check className="w-4 h-4" />
           </Button>
           <Button 
             type="button" 
             variant="ghost" 
-            size="sm" 
+            size="sm"
+            className="p-1.5 h-auto hover:bg-white/10"
             onClick={() => {
               setShowNewTaskInput(false);
               setNewTaskTitle('');
             }}
           >
-            <Trash className="w-4 h-4" />
+            <X className="w-4 h-4" />
           </Button>
         </form>
       )}
       
       {tasks.length === 0 ? (
-        <p className="text-note-muted text-sm text-center py-4">
-          Nenhuma tarefa criada. Adicione sua primeira tarefa!
+        <p className="text-white/40 text-sm text-center py-4">
+          Nenhuma tarefa criada
         </p>
       ) : (
-        <ul className="space-y-2">
+        <ul className="space-y-1">
           {tasks.map((task) => (
             <li 
               key={task.id}
-              className="flex items-center justify-between group p-2 rounded-md hover:bg-white/5 transition-colors"
+              className="flex items-center justify-between group p-2 rounded-md card-hover"
             >
               <div 
                 className="flex items-center gap-2 flex-1 cursor-pointer"
                 onClick={() => handleToggleTask(task.id)}
               >
                 {task.completed ? (
-                  <CheckSquare className="w-5 h-5 text-green-500" />
+                  <CheckSquare className="w-4 h-4 text-green-500" />
                 ) : (
-                  <Square className="w-5 h-5" />
+                  <Square className="w-4 h-4 text-white/70" />
                 )}
-                <span className={`${task.completed ? 'line-through text-note-muted' : ''}`}>
+                <span className={`text-sm ${task.completed ? 'line-through text-white/40' : 'text-white/90'}`}>
                   {task.title}
                 </span>
               </div>
@@ -117,9 +121,9 @@ export default function TaskList() {
                 variant="ghost"
                 size="sm"
                 onClick={() => handleDeleteTask(task.id)}
-                className="opacity-0 group-hover:opacity-100 transition-opacity p-1 h-auto"
+                className="opacity-0 group-hover:opacity-100 transition-opacity p-1 h-auto hover:bg-white/10"
               >
-                <Trash className="w-4 h-4" />
+                <Trash className="w-3 h-3" />
               </Button>
             </li>
           ))}

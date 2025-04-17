@@ -1,3 +1,4 @@
+
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
 
 @tailwind base;
@@ -24,7 +25,7 @@
     --destructive-foreground: 0 0% 98%;
     --border: 0 0% 14.9%;
     --input: 0 0% 14.9%;
-    --ring: 0 0% 83.9%;
+    --ring: 240 5.9% 10%;
   }
 }
 
@@ -37,7 +38,7 @@
     font-feature-settings: "ss01", "ss02", "cv01", "cv02", "cv03";
   }
   input, textarea {
-    @apply text-white;
+    @apply text-white bg-secondary/50 border-secondary focus:border-white/20 rounded-lg transition-colors;
   }
   button {
     @apply text-white;
@@ -45,7 +46,7 @@
 }
 
 .glass-panel {
-  @apply bg-black/40 backdrop-blur-lg border border-white/10;
+  @apply bg-secondary/30 backdrop-blur-md border border-white/5 rounded-xl shadow-xl;
 }
 
 .note-transition {
@@ -55,3 +56,12 @@
 .hover-scale {
   @apply transition-transform duration-200 hover:scale-[1.02];
 }
+
+.card-hover {
+  @apply hover:bg-white/5 transition-colors duration-200;
+}
+
+.text-gradient {
+  @apply bg-gradient-to-r from-white to-white/70 bg-clip-text text-transparent;
+}
+
