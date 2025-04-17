@@ -1,6 +1,22 @@
 import React, { useState } from 'react';
 import { useNotes } from '../contexts/NotesContext';
-import { Plus, Trash2, Pen, Sun, Moon, Target } from 'lucide-react';
+import { 
+  Plus, 
+  Trash2, 
+  Pen, 
+  Sun, 
+  Moon, 
+  Target, 
+  FolderPlus,
+  X,
+  Folder,
+  Check,
+  MoreVertical,
+  Edit,
+  Trash,
+  ArrowDown,
+  ArrowUp
+} from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { Button } from './ui/button';
 import { 
@@ -11,7 +27,7 @@ import {
 } from './ui/dropdown-menu';
 import { useToast } from '../hooks/use-toast';
 import TaskList from './TaskList';
-import { useTheme } from '../hooks/use-theme';
+import useTheme from '../hooks/use-theme';
 
 export default function NoteList() {
   const { notes, folders, deleteNote, addFolder, updateFolder, deleteFolder } = useNotes();
