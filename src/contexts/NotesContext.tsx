@@ -1,4 +1,3 @@
-
 import React, { createContext, useContext, useState, useEffect } from 'react';
 
 interface Note {
@@ -7,6 +6,7 @@ interface Note {
   content: string;
   createdAt: number;
   folderId: string | null;
+  deletedAt?: number | null;
 }
 
 interface Folder {
@@ -17,6 +17,7 @@ interface Folder {
 
 interface NotesContextType {
   notes: Note[];
+  deletedNotes: Note[];
   folders: Folder[];
   addNote: (title: string, content: string, folderId?: string | null) => void;
   updateNote: (id: string, title: string, content: string, folderId?: string | null) => void;
@@ -25,6 +26,8 @@ interface NotesContextType {
   addFolder: (name: string) => void;
   updateFolder: (id: string, name: string) => void;
   deleteFolder: (id: string) => void;
+  restoreNote: (id: string) => void;
+  permanentlyDeleteNote: (id: string) => void;
 }
 
 const NotesContext = createContext<NotesContextType | undefined>(undefined);
@@ -61,9 +64,37 @@ export function NotesProvider({ children }: { children: React.ReactNode }) {
       content,
       createdAt: Date.now(),
       folderId,
+      deletedAt: null
     };
     setNotes((prev) => [newNote, ...prev]);
   };
+
+  const deleteNote = (id: string) => {
+    setNotes((prev) =>
+      prev.map((note) =>
+        note.id === id
+          ? { ...note, deletedAt: Date.now() }
+          : note
+      )
+    );
+  };
+
+  const restoreNote = (id: string) => {
+    setNotes((prev) =>
+      prev.map((note) =>
+        note.id === id
+          ? { ...note, deletedAt: null }
+          : note
+      )
+    );
+  };
+
+  const permanentlyDeleteNote = (id: string) => {
+    setNotes((prev) => prev.filter((note) => note.id !== id));
+  };
+
+  const getLiveNotes = () => notes.filter(note => !note.deletedAt);
+  const getDeletedNotes = () => notes.filter(note => note.deletedAt);
 
   const updateNote = (id: string, title: string, content: string, folderId?: string | null) => {
     setNotes((prev) =>
@@ -78,10 +109,6 @@ export function NotesProvider({ children }: { children: React.ReactNode }) {
           : note
       )
     );
-  };
-
-  const deleteNote = (id: string) => {
-    setNotes((prev) => prev.filter((note) => note.id !== id));
   };
 
   const getNote = (id: string) => {
@@ -107,21 +134,20 @@ export function NotesProvider({ children }: { children: React.ReactNode }) {
   };
 
   const deleteFolder = (id: string) => {
-    // Move notes in this folder to no folder
     setNotes((prev) =>
       prev.map((note) =>
         note.folderId === id ? { ...note, folderId: null } : note
       )
     );
     
-    // Delete the folder
     setFolders((prev) => prev.filter((folder) => folder.id !== id));
   };
 
   return (
     <NotesContext.Provider 
       value={{ 
-        notes, 
+        notes: getLiveNotes(),
+        deletedNotes: getDeletedNotes(),
         folders, 
         addNote, 
         updateNote, 
@@ -129,7 +155,9 @@ export function NotesProvider({ children }: { children: React.ReactNode }) {
         getNote,
         addFolder,
         updateFolder,
-        deleteFolder
+        deleteFolder,
+        restoreNote,
+        permanentlyDeleteNote
       }}
     >
       {children}

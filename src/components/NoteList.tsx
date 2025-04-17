@@ -1,7 +1,6 @@
-
 import React, { useState } from 'react';
 import { useNotes } from '../contexts/NotesContext';
-import { Plus, Trash, Target, FolderPlus, Folder, ArrowDown, ArrowUp, MoreVertical, Edit, X, Check, ListTodo } from 'lucide-react';
+import { Plus, Trash2, Pen, Sun, Moon, Target } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { Button } from './ui/button';
 import { 
@@ -12,11 +11,13 @@ import {
 } from './ui/dropdown-menu';
 import { useToast } from '../hooks/use-toast';
 import TaskList from './TaskList';
+import { useTheme } from '../hooks/use-theme';
 
 export default function NoteList() {
   const { notes, folders, deleteNote, addFolder, updateFolder, deleteFolder } = useNotes();
   const navigate = useNavigate();
   const { toast } = useToast();
+  const { theme, toggleTheme } = useTheme();
   
   const [sortDirection, setSortDirection] = useState<'newest' | 'oldest'>('newest');
   const [newFolderName, setNewFolderName] = useState('');
@@ -91,38 +92,40 @@ export default function NoteList() {
     <div className="max-w-4xl mx-auto p-6">
       <div className="flex justify-between items-center mb-8">
         <div className="flex items-center gap-3 animate-fade-in">
-          <Target className="w-6 h-6" />
+          <Pen className="w-6 h-6 transform -rotate-45" />
           <h1 className="text-3xl font-light tracking-tight">
             Gustavo Correia Copywriter
           </h1>
-          <div className="flex gap-2 items-center ml-4">
-            <Button
-              variant="ghost"
-              size="sm"
-              onClick={toggleSortDirection}
-              className="p-1 h-auto flex items-center gap-1 text-xs"
-              title={sortDirection === 'newest' ? 'Ordenar por mais antigas' : 'Ordenar por mais recentes'}
-            >
-              {sortDirection === 'newest' ? <ArrowDown className="w-4 h-4" /> : <ArrowUp className="w-4 h-4" />}
-            </Button>
-            <Button
-              variant="ghost"
-              size="sm"
-              onClick={() => setShowNewFolderInput(true)}
-              className="p-1 h-auto"
-              title="Criar nova pasta"
-            >
-              <FolderPlus className="w-4 h-4" />
-            </Button>
-          </div>
         </div>
-        <Button
-          onClick={() => navigate('/new')}
-          className="bg-black text-white hover:bg-black/80 note-transition active:scale-95"
-        >
-          <Plus className="w-4 h-4 mr-2" />
-          New Note
-        </Button>
+        <div className="flex gap-4">
+          <Button
+            variant="ghost"
+            onClick={toggleTheme}
+            className="p-2 h-auto"
+            title={theme === 'dark' ? 'Modo claro' : 'Modo escuro'}
+          >
+            {theme === 'dark' ? (
+              <Sun className="w-5 h-5" />
+            ) : (
+              <Moon className="w-5 h-5" />
+            )}
+          </Button>
+          <Button
+            variant="ghost"
+            onClick={() => navigate('/trash')}
+            className="p-2 h-auto"
+            title="Lixeira"
+          >
+            <Trash2 className="w-5 h-5" />
+          </Button>
+          <Button
+            onClick={() => navigate('/new')}
+            className="bg-black text-white hover:bg-black/80 note-transition active:scale-95"
+          >
+            <Plus className="w-4 h-4 mr-2" />
+            Nova Nota
+          </Button>
+        </div>
       </div>
       
       <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-6">
