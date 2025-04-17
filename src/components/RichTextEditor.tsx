@@ -68,7 +68,7 @@ export default function RichTextEditor({ content, onChange }: RichTextEditorProp
       </div>
       <EditorContent 
         editor={editor} 
-        className="prose prose-invert max-w-none p-6 min-h-[200px] focus:outline-none text-white prose-p:text-white/90 prose-headings:text-white"
+        className="prose prose-invert max-w-none p-6 min-h-[200px] focus:outline-none prose-p:text-white prose-headings:text-white prose-strong:text-white prose-em:text-white prose-li:text-white prose-code:text-white"
       />
     </div>
   );

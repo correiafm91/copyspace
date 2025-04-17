@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useNotes } from '../contexts/NotesContext';
@@ -28,14 +27,16 @@ export default function NoteEditor() {
         setTitle(note.title);
         setContent(note.content);
         setSelectedFolderId(note.folderId);
+        console.log("Carregando nota:", note.title, "Conteúdo:", note.content);
       }
     }
   }, [id, getNote]);
 
   const handleSave = () => {
-    if (!title.trim() || !content.trim()) return;
+    if (!title.trim()) return;
 
     if (id) {
+      console.log("Salvando nota:", title, "Conteúdo:", content);
       updateNote(id, title, content, selectedFolderId);
     } else {
       addNote(title, content, selectedFolderId);
@@ -54,7 +55,6 @@ export default function NoteEditor() {
   };
 
   const copyToClipboard = async () => {
-    // Strip HTML tags when copying to clipboard
     const plainText = content.replace(/<[^>]*>/g, '');
     await navigator.clipboard.writeText(plainText);
     setIsCopied(true);
@@ -176,15 +176,15 @@ export default function NoteEditor() {
             value={title}
             onChange={(e) => setTitle(e.target.value)}
             placeholder="Note title..."
-            className="w-full bg-transparent text-2xl font-light focus:outline-none transition-colors focus:bg-white/5 rounded px-2 py-1"
+            className="w-full bg-transparent text-2xl font-light focus:outline-none transition-colors focus:bg-white/5 rounded px-2 py-1 text-white"
             autoFocus
           />
           
           {folders.length > 0 && (
             <div className="mt-2">
-              <label className="block text-sm mb-1">Pasta</label>
+              <label className="block text-sm mb-1 text-white">Pasta</label>
               <select 
-                className="w-full bg-white/5 border border-white/10 rounded px-2 py-2 focus:outline-none"
+                className="w-full bg-white/5 border border-white/10 rounded px-2 py-2 focus:outline-none text-white"
                 value={selectedFolderId || ""}
                 onChange={(e) => setSelectedFolderId(e.target.value || null)}
               >
