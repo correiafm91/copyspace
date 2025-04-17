@@ -1,7 +1,7 @@
 
 import React, { useState } from 'react';
 import { useTasks } from '../contexts/TaskContext';
-import { Plus, Trash, Check, Square, CheckSquare, ListTodo } from 'lucide-react';
+import { Plus, Trash, Check, Square, CheckSquare, ListTodo, X } from 'lucide-react';
 import { Button } from './ui/button';
 import { useToast } from '../hooks/use-toast';
 
